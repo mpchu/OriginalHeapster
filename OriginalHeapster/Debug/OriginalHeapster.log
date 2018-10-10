@@ -1,0 +1,8 @@
+﻿  HeapManager.c
+c:\users\matthew\source\repos\originalheapster\originalheapster\heapmanager.c(20): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'Block *'
+c:\users\matthew\source\repos\originalheapster\originalheapster\heapmanager.c(98): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+c:\users\matthew\source\repos\originalheapster\originalheapster\heapmanager.c(100): warning C4022: 'my_free': pointer mismatch for actual parameter 1
+c:\users\matthew\source\repos\originalheapster\originalheapster\heapmanager.c(102): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'int *'
+c:\users\matthew\source\repos\originalheapster\originalheapster\heapmanager.c(97): warning C4047: 'initializing': 'int' differs in levels of indirection from 'void *'
+c:\users\matthew\source\repos\originalheapster\originalheapster\heapmanager.c(101): warning C4047: 'initializing': 'int' differs in levels of indirection from 'void *'
+  OriginalHeapster.vcxproj -> C:\Users\Matthew\source\repos\OriginalHeapster\Debug\OriginalHeapster.exe
