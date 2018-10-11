@@ -17,12 +17,12 @@ void my_initialize_heap(int size) {
 	free_head->block_size = size - overhead_size;
 	free_head->next_block = NULL;
 
-	printf("heap address: %d\n", free_head);
+	//printf("heap address: %d\n", free_head);
 }
 
 void* my_alloc(int size) {
 	//size must be a multiple of ptr_size
-	size += size % ptr_size;
+	size += ptr_size - (size % ptr_size);
 	//printf("size is %d\n", size);
 	//walk the free list starting at free_head
 	int cont = 1;
@@ -30,6 +30,8 @@ void* my_alloc(int size) {
 	struct Block *prev_block = free_head;
 	struct Block *current_block = free_head;
 	while (cont) {
+		printf("current_block address: %d\n", current_block);
+		printf("current_block size: %d\n", current_block->block_size);
 		if (current_block->block_size >= size) {
 			//printf("block size: %d\n", current_block->block_size);
 			cont = 0;
@@ -46,8 +48,8 @@ void* my_alloc(int size) {
 	//decide whether or not to split the data block
 	bool canSplit = current_block->block_size >= size + overhead_size + ptr_size;
 	bool isHead = current_block == free_head;
-	printf("canSplit = %d\n", canSplit);
-	printf("isHead = %d\n", isHead);
+	//printf("canSplit = %d\n", canSplit);
+	//printf("isHead = %d\n", isHead);
 	if (canSplit && isHead) {
 		//instantiate the new free block within the current block's data portion
 		//current block will be used for allocating data
@@ -57,7 +59,7 @@ void* my_alloc(int size) {
 
 		//set free_head to the new block created
 		free_head = new_block;
-		printf("free head size after splitting: %d\n", free_head->block_size);
+		printf("free head address: %d\n", free_head);
 
 		current_block->block_size = size; //update size
 	}
@@ -69,11 +71,11 @@ void* my_alloc(int size) {
 		new_block->next_block = current_block->next_block;
 
 		//update pointer of prev_block to point to following block
-		prev_block->next_block = current_block->next_block;
+		prev_block->next_block = new_block;
 	}
 	else if (!canSplit && isHead) {
 		free_head = current_block->next_block;
-		//printf("update free_head: %d\n", free_head->block_size);
+		printf("free head address: %d\n", free_head);
 	}
 	else {
 		prev_block->next_block = current_block->next_block;
@@ -88,18 +90,64 @@ void my_free(void *data) {
 	//printf("newly freed block size: %d\n", free_block->block_size);
 	free_block->next_block = free_head;
 	free_head = free_block;
-	printf("new free head size after update: %d\n", free_head->block_size);
+	printf("free head address: %d\n", free_head);
 }
 
 int main() {
-	my_initialize_heap(6400);
+	my_initialize_heap(8000);
 
+	//test 1: allocating 1 int, freeing it, then allocating another
+	//both should have the same address
+	printf("Test 1\n");
 	int *a = my_alloc(sizeof(int)); //allocate an int
-	printf("a address: %d\nfreeing a now...\n", a);
-
+	printf("int a address: %d\nfreeing a now...\n", a);
 	my_free(a);
 	int *b = my_alloc(sizeof(int)); //allocate another int
-	printf("b address: %d\n", b);
+	printf("int b address: %d\n", b);
 	system("PAUSE");
+
+	//test 2
+	printf("\nTest 2\n");
+	int *c = my_alloc(sizeof(int));
+	int *d = my_alloc(sizeof(int));
+	printf("int c address: %d\n", c);
+	printf("int d address: %d\n", d);
+	system("PAUSE");
+
+	//test 3
+	printf("\nTest 3\n");
+	int *e = my_alloc(sizeof(int));
+	int *f = my_alloc(sizeof(int));
+	int *g = my_alloc(sizeof(int));
+	printf("int e address: %d\n", e);
+	printf("int f address: %d\n", f);
+	printf("int g address: %d\nnow freeing int f\n", g);
+	my_free(f);
+	printf("allocating an array of two double values...\n");
+	double *arr = my_alloc(2 * sizeof(double));
+	printf("double array address: %d\n", arr);
+	int *h = my_alloc(sizeof(int));
+	printf("int h address: %d\n", h);
+	printf("Compare int h address to int f address\n");
+	system("PAUSE");
+
+	//test 4
+	printf("\nTest 4\n");
+	char *char_data = my_alloc(sizeof(char));
+	int *i = my_alloc(sizeof(int));
+	printf("char_data address: %d\n", char_data);
+	printf("int i address: %d\n", i);
+	system("PAUSE");
+
+	//test 5
+	printf("\nTest 5\n");
+	int *int_arr = my_alloc(80 * sizeof(int));
+	int *j = my_alloc(sizeof(int));
+	printf("int_arr address: %d\n", int_arr);
+	printf("int j address: %d\nfreeing int_arr...\n", j);
+	my_free(int_arr);
+	printf("int j address: %d\n", j);
+	system("PAUSE");
+
 	return 0;
 }
