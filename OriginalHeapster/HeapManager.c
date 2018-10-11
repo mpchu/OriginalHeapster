@@ -22,8 +22,10 @@ void my_initialize_heap(int size) {
 
 void* my_alloc(int size) {
 	//size must be a multiple of ptr_size
-	size += ptr_size - (size % ptr_size);
-	//printf("size is %d\n", size);
+	if (size % ptr_size != 0) {
+		size += ptr_size - (size % ptr_size);
+	}
+	printf("size is %d\n", size);
 	//walk the free list starting at free_head
 	int cont = 1;
 
