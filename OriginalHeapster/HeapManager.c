@@ -1,3 +1,6 @@
+//CECS 424 - Original Heapster
+//Author: Matthew Chu
+//10/11/2018
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
