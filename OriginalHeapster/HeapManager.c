@@ -98,7 +98,7 @@ void test1() {
 	printf("int b address: %d\n", b);
 }
 
-	//test 2
+//test 2
 void test2() {
 	printf("\nTest 2\n");
 	my_initialize_heap(1000);
