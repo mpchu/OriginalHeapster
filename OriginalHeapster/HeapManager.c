@@ -28,13 +28,13 @@ void* my_alloc(int size) {
 	}
 
 	//walk the free list starting at free_head
-	int cont = 1;
-
 	struct Block *prev_block = free_head;
 	struct Block *current_block = free_head;
+	
+	bool cont = true;
 	while (cont) {
 		if (current_block->block_size >= size) {
-			cont = 0;
+			cont = false;
 		}
 		else if (current_block->next_block != NULL) {
 			prev_block = current_block; //update prev_block
@@ -161,7 +161,7 @@ int main() {
 
 		switch (input)
 		{
-			case -1:
+			case 0:
 				printf("Exiting program!\n");
 				break;
 			case 1:
